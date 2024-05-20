@@ -4,11 +4,12 @@
 
 @layer utilities {
     .text-accent {
-        color: #e9512c;
+        color: rgb(255, 60, 60);
+        /*        color: #FF3C3C;*/
     }
 
     .bg-accent {
-        background-color: #e9512c;
+        background-color: rgb(255, 60, 60);
     }
 }
 
