@@ -3,7 +3,7 @@ import { MetaFunction, json } from "@remix-run/react";
 
 //Components..
 import NavMenu from "~/comp/navmenu";
-import Notetiles from "~/comp/NoteList";
+import Notetiles from "~/comp/notelist";
 
 //Meta inject
 export const meta: MetaFunction = () => {

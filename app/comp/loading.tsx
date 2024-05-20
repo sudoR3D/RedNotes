@@ -1,5 +1,3 @@
-import React from "react";
-
 //import { useNavigation } from "@remix-run/react"
 export default function Loading() {
     return (
