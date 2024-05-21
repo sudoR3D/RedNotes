@@ -1,7 +1,7 @@
-//Dependencies--
+//Dependencies
 import { MetaFunction, json } from "@remix-run/react";
 
-//Components..
+//Components
 import NavMenu from "~/comp/navmenu";
 import Notetiles from "~/comp/notelist";
 
