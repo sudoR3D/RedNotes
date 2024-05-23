@@ -5,8 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        Kayak: ["Kayak"],
-        FredokaOne: ["FredokaOne"],
+        Kayak: ["Kayak", 'sans-serif'],
       },
     },
   },

@@ -49,7 +49,6 @@ const NoteList = [{
 }];
 //Dependencies
 import { Link, redirect } from "@remix-run/react";
-import StarLineIcon from 'remixicon-react/StarLineIcon'
 import StarSmileLineIcon from "remixicon-react/StarSmileLineIcon";
 import StarSmileFillIcon from "remixicon-react/StarSmileFillIcon";
 //Components
@@ -69,7 +68,7 @@ export default function Notetiles() {
                                 </button> :
                                 <button type="submit" className="p-3.5 bg-gray-900 hover:bg-red-700 transition hover:duration-100 group rounded-l-lg">
                                     <StarSmileLineIcon className=" group-hover:hidden block hover:duration-100" />
-                                    <StarSmileFillIcon className=" group-hover:block hidden hover:duration-100 " />
+                                    <StarSmileFillIcon className=" group-hover:block hidden hover:duration-100" />
                                 </button>
                             }
                         </form>

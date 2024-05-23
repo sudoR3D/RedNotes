@@ -2,7 +2,7 @@
 import { MetaFunction, json } from "@remix-run/react";
 
 //Components
-import NavMenu from "~/comp/navmenu";
+//import NavMenu from "~/comp/navmenu";
 import Notetiles from "~/comp/notelist";
 
 //Meta inject
@@ -16,7 +16,6 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <>
-      <NavMenu />
       <Notetiles />
     </>
   );

@@ -5,7 +5,6 @@
 @layer utilities {
     .text-accent {
         color: rgb(255, 60, 60);
-        /*        color: #FF3C3C;*/
     }
 
     .bg-accent {
@@ -16,7 +15,10 @@
 @layer base {
     @font-face {
         font-family: 'Kayak';
-        src: url("/Kayak Sans Bold.otf");
+        src: local('Kayak Sans Regular'),
+            local('KayakSans-Regular'),
+            url("/KayakSansRegular.woff") format('woff'),
+            url("/KayakSansRegular.ttf") format('truetype');
         font-weight: 900;
         font-style: normal;
     }
