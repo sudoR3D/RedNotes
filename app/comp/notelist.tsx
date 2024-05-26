@@ -48,15 +48,19 @@ const NoteList = [{
     "content": "Esse Lorem in est deserunt. Esse et eu cillum fugiat exercitation Lorem dolor incididunt occaecat officia. Mollit pariatur aliquip sint veniam deserunt dolor nisi proident exercitation. Reprehenderit cillum commodo eu tempor do. Sint in ea aliqua minim ut nulla quis minim."
 }];
 //Dependencies
-import { Link, redirect } from "@remix-run/react";
+import { Link, redirect, useLoaderData } from "@remix-run/react";
 import StarSmileLineIcon from "remixicon-react/StarSmileLineIcon";
 import StarSmileFillIcon from "remixicon-react/StarSmileFillIcon";
 //Components
+//import { Notes_List } from "./getNoteList";
 
-export default function Notetiles() {
+export default function Notetiles(Notes_List) {
+    //const LoadList = useLoaderData<typeof loader>();
     return (
-        <div className="mx-8 mb-7 mt-[5.5rem] grid justify-center text-zinc-300">
+        <>
             {NoteList.map(note => (
+                //LoadList.map(note => (
+                //Notes_List.map(note => (
                 <div className="md:w-[704px] xl:w-[820px] lg:w-[820px] hover:scale-[1.01] hover:duration-150">
                     <div className="flex my-1.5">
                         <form className="inline-flex items-center" action="/" method="post">
@@ -77,12 +81,36 @@ export default function Notetiles() {
                                 <p className="text-lg text-wrap line-clamp-1">{note.title}</p>
                             </div>
                             <div className="inline-flex min-w-fit items-center">
-                                <p className="min-w-min inline-flex">{note.creationDate?.dd}-{note.creationDate?.mm}-{note.creationDate?.yyyy}</p>
+                                <p className="min-w-min inline-flex">"note.creationDate"</p>
                             </div>
                         </Link>
                     </div>
                 </div>
             ))}
-        </div >
+        </>
     )
 };
+
+
+//import { json } from "@remix-run/node";
+//import { db } from "./db.server";
+//export const loader = async () => {
+//    return json({ ok: true });
+//}
+
+//export async function loader() {
+//    return json(await db.notes.findMany());
+//}
+
+//export default function ListNote() {
+//    const data = useLoaderData<typeof loader>();
+//    return (
+//        <>
+//            <ul>
+//                {data.map((notedata) => (
+//                    <li>{notedata.title}</li>
+//                ))}
+//            </ul>
+//        </>
+//    )
+//}
