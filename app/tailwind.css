@@ -10,6 +10,10 @@
     .bg-accent {
         background-color: rgb(255, 60, 60);
     }
+
+    .body-back {
+        background-image: url(/topography.svg);
+    }
 }
 
 @layer base {

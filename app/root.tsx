@@ -23,13 +23,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className=" bg-zinc-800 font-sans">
-        <NavMenu />
-        <div className=" mt-[5.5rem] mx-8 mb-7 grid justify-center text-zinc-300">
-          {children}
+      <body className="font-sans body-back">
+        <div className=" bg-zinc-800 bg-opacity-95 h-screen">
+          <NavMenu />
+          <div className="pt-[5.3rem] flex justify-center text-zinc-300 w-full md:w-[704px] xl:w-[820px] lg:w-[820px] px-8">
+            <div className="grid w-full">
+              {children}
+            </div>
+          </div>
+          <ScrollRestoration />
+          <Scripts />
         </div>
-        <ScrollRestoration />
-        <Scripts />
       </body>
     </html>
   );

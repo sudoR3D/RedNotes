@@ -1,5 +1,5 @@
 //Dependencies
-import { useLocation, Link, redirect } from "@remix-run/react";
+import { useLocation, Link, redirect, useNavigation } from "@remix-run/react";
 import ArrowLeftSLine from "remixicon-react/ArrowLeftSLineIcon";
 import AddLineIcon from "remixicon-react/AddLineIcon";
 import Loading from "./loading";
@@ -11,20 +11,24 @@ export default function NavMenu() {
                     <img src="/logo.webp" alt="RedNotes" className=" h-[52px] w-[52px]" />
                     <h1 className="font-Kayak tracking-wide pt-1 content-center pl-3">RedNotes</h1>
 
-                    <Loading />
+                    {useNavigation().state !== "idle" ?
+                        <div className="mx-4">
+                            <Loading />
+                        </div> : null}
                 </div>
                 <div className="inline-flex">
                     {useLocation().pathname !== "/" ?
-                        <Link className="flex antialiased py-3 group" to={'/'}>
-                            <div className="inline-flex px-5 py-2.5 group-hover:bg-gray-900 rounded-md align-middle">
-                                <ArrowLeftSLine className=" w-7 h-7 text-gray-100 group-hover:text-accent transition duration-100" />
-                                <p className="text-xl pl-1 text-gray-100 group-hover:text-accent transition duration-100">Back</p>
+                        <Link className="flex antialiased py-3 " to={'/'}>
+                            <div className="inline-flex px-5 py-2.5 hover:bg-accent rounded-lg align-middle transition-color duration-75 ease-in">
+                                <ArrowLeftSLine className=" w-7 h-7 text-gray-100 " />
+                                <p className="text-xl pl-1 text-gray-100">Back</p>
                             </div>
-                        </Link> : null}
-                    <Link className="flex antialiased py-3 group" to={'edit'}>
-                        <div className="inline-flex px-5 py-2.5 group-hover:bg-gray-900 rounded-md align-middle">
-                            <AddLineIcon className=" w-7 h-7 text-gray-100 group-hover:text-accent transition duration-100" />
-                            <p className="text-xl pl-1 text-gray-100 group-hover:text-accent transition duration-100">New</p>
+                        </Link>
+                        : null}
+                    <Link className="flex antialiased py-3  ml-2" to={'/noteview'}>
+                        <div className="inline-flex px-5 py-2.5 hover:bg-accent rounded-lg align-middle transition-color duration-75 ease-in">
+                            <AddLineIcon className=" w-7 h-7 text-gray-100" />
+                            <p className="text-xl pl-1 text-gray-100">New</p>
                         </div>
                     </Link>
                 </div>
