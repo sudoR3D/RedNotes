@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model Notes {
-  noteid String @id @map("_id") @default(auto()) @db.ObjectId
+  noteid String @id @map("_id")
   title   String   
   crDate  DateTime @default(now())
   upDate  DateTime @updatedAt

@@ -1,6 +1,5 @@
-import { ActionFunction, json, redirect } from "@remix-run/node";
-import { toggleStar } from "~/_tools/toggleStar"; // Adjust the import path
-
+import { ActionFunction, json } from "@remix-run/node";
+import { toggleStar } from "~/_tools/toggleStar";
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
     const noteId = formData.get("noteid");

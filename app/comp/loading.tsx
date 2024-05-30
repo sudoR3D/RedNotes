@@ -1,6 +1,5 @@
-//import { useNavigation } from "@remix-run/react"
+import React from "react"
 export default function Loading() {
-    //const working = useNavigation().state !== "idle";
     return (
         <div className="relative" >
             <div className="w-6 h-6 bg-slate-300 rounded-full"></div>

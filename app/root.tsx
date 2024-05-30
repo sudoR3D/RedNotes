@@ -23,14 +23,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="font-sans body-back">
-        <div className=" bg-zinc-800 bg-opacity-95 h-screen">
+      <body className="font-sans body-back bg-fixed">
+        <div className=" bg-zinc-800 bg-opacity-95 h-full min-h-screen">
           <NavMenu />
-          <div className="pt-[5.3rem] flex justify-center text-zinc-300 w-full md:w-[704px] xl:w-[820px] lg:w-[820px] px-8">
-            <div className="grid w-full">
-              {children}
-            </div>
-          </div>
+          {children}
           <ScrollRestoration />
           <Scripts />
         </div>
@@ -40,5 +36,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <div className="py-[5.4rem] justify-center text-zinc-300 flex px-8">
+      <div className="grid w-full md:w-[704px] xl:w-[820px] lg:w-[820px]">
+        <Outlet />
+      </div>
+    </div>
+  );
 }
