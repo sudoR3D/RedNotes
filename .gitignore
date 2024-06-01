@@ -4,3 +4,4 @@ unused
 /.cache
 /build
 .env
+.vscode

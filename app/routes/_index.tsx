@@ -16,7 +16,7 @@ interface Props {
 //Meta inject
 export const meta: MetaFunction = () => {
   return [
-    { title: "Notes by sudoRED w/ Remix & npm" },
+    { title: "Notes by sudoRED w/ Remix" },
   ];
 };
 //Load data
