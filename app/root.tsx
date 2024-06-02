@@ -1,30 +1,28 @@
-//Packge Dependencies 
+// Package Dependencies
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import { LinksFunction } from "@remix-run/node";
-//Component Dependencies
+
+// Component Dependencies
 import stylesheet from "~/tailwind.css?url";
 import NavMenu from "./comp/navmenu";
 
-//Add Stylysheet
+// Add Stylesheet
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
-//Document Layout
+// Document Layout Component
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
       <body className="font-sans body-back bg-fixed">
-        <div className=" bg-zinc-800 bg-opacity-95 h-full min-h-screen">
+        <div className="bg-zinc-800 bg-opacity-95 h-full min-h-screen">
           <NavMenu />
           {children}
           <ScrollRestoration />
@@ -35,6 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Main App Component
 export default function App() {
   return (
     <div className="py-[5.4rem] justify-center text-zinc-300 flex px-8">

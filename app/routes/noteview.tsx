@@ -6,49 +6,50 @@ import ToggleStarButton from "~/comp/startoggle";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import React from "react";
-import { da } from "date-fns/locale/da";
-import { DateToSystemTimezoneSetter } from "node_modules/date-fns/parse/_lib/Setter";
-const nanoid = customAlphabet('1234567890abcdef', 8)
+//const nanoid = customAlphabet('1234567890abcdef', 8)
 
 interface Props {
   onToggleStar: (updatedNote: { noteid: string; stared: boolean }) => void;
 }
 interface Note {
-  noteid: string;
-  title: string;
-  crDate: Date;
-  upDate: Date;
-  content: string;
-  stared: boolean;
+  noteid: string | undefined;
+  title: string | undefined;
+  crDate: Date | undefined;
+  upDate: Date | undefined;
+  content: string | undefined;
+  stared: boolean | undefined;
 }
-interface NewNote {
-  noteid: string;
-  title: string;
-  content: string;
-  crDate: string | undefined;
-  stared: boolean;
-}
+//interface NewNote {
+//  noteid: string | undefined;
+//  title: string;
+//  content: string;
+//  crDate: string | undefined;
+//  stared: boolean;
+//}
 export async function loader({ request }) {
   const url = new URL(request.url)
   const reqid = url.searchParams.get('id')
-  let note: Note | NewNote | null = null;
+  //let note: Note | NewNote | null = null;
+  let note: Note | null;
 
   reqid !== null ?
     note = await notedb.notes.findUnique({
       where: { noteid: reqid },
     }) :
     note = {
-      noteid: "",
-      title: "",
-      content: "",
+      noteid: undefined,
+      title: undefined,
+      content: undefined,
       crDate: undefined,
+      upDate: undefined,
       stared: false,
     };
   return note
 };
 
 const Index: React.FC<Props> = ({ onToggleStar }) => {
-  const note = useLoaderData<Note | NewNote | undefined>();
+  //const note = useLoaderData<Note | NewNote | undefined>();
+  const note = useLoaderData<Note | undefined>();
   const [title, setTitle] = useState(note.title || "")
   const [content, setContent] = useState(note.content || "")
   const [stared, setStared] = useState(note.stared)
@@ -60,7 +61,7 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
   }, [note]);
 
   useEffect(() => {
-    document.title = note.noteid === "" ? "Create New - RedNotes" : note.title + " - RedNotes";
+    document.title = note === undefined ? "Create New - RedNotes" : note.title + " - RedNotes";
   }, [note]);
 
   useEffect(() => {

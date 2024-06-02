@@ -9,14 +9,17 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  //
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  //url      = "postgresql://postgres:postgres@localhost:5432/devnotes?schema=public"
 }
+
 model Notes {
-  noteid String @id @map("_id")
-  title   String   
+  noteid  String   @id @unique @default(uuid())
+  title   String
   crDate  DateTime @default(now())
   upDate  DateTime @updatedAt
-  content String   
+  content String
   stared  Boolean  @default(false)
 }
