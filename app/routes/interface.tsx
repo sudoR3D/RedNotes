@@ -1,6 +1,6 @@
 //Dependencies
 import { ActionFunction, json } from "@remix-run/node";
-import { notedb } from "~/_tools/prisma.server";
+import { notedb } from "~/comp/prisma.server";
 
 //Action function
 export const action: ActionFunction = async ({ request }) => {
@@ -32,6 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
         });
 
         //Return updated note
+        console.log(updatedNote)
         return json(updatedNote);
     } catch (error) {
         //Return error

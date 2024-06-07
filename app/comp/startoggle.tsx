@@ -18,9 +18,13 @@ const ToggleStarButton: React.FC<ToggleStarButtonProps> = ({ noteId, stared: ini
     }, [initialStared]);
 
     const handleClick = async () => {
+        if (typeof noteId !== "string" || noteId.trim() === "") {
+            console.error("Invalid note ID");
+            return;
+        }
         setLoading(true);
         try {
-            const response = await fetch('/makefav', {
+            const response = await fetch('/interface', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -35,6 +39,7 @@ const ToggleStarButton: React.FC<ToggleStarButtonProps> = ({ noteId, stared: ini
             }
 
             const updatedNote = await response.json();
+            console.log(updatedNote)
             setStared(updatedNote.stared);
             setLoading(false);
 
@@ -50,8 +55,8 @@ const ToggleStarButton: React.FC<ToggleStarButtonProps> = ({ noteId, stared: ini
     return (
         <button
             onClick={handleClick}
-            disabled={loading}
-            className={`p-3.5 ${stared ? 'bg-accent hover:bg-red-700' : 'bg-gray-900 hover:bg-gray-700'} transition-color hover:duration-100 group rounded-lg `} >
+            disabled={loading || noteId === "" ? true : false}
+            className={`p-3.5 ${stared ? 'bg-accent hover:bg-red-700' : ' enabled:bg-gray-900 hover:bg-gray-600'} transition-color hover:duration-100 group rounded-lg `} >
             {loading ? (
                 <Loading />
             ) : (

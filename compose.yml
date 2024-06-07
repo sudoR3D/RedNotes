@@ -3,7 +3,7 @@ version: "3"
 services:
   pgdb:
     image: postgres
-    restart: always
+    restart: on-failure
     volumes:
       - ./pgdb:/var/lib/postgresql/data
     ports:

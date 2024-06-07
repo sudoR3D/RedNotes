@@ -4,7 +4,7 @@ import { json, LoaderFunction, ActionFunction } from "@remix-run/node";
 import { Link, useLoaderData, MetaFunction } from "@remix-run/react";
 import type { Notes } from "@prisma/client";
 import { format } from "date-fns";
-import { notedb } from "~/_tools/prisma.server";
+import { notedb } from "~/comp/prisma.server";
 import ToggleStarButton from "~/comp/startoggle";
 
 //Data type for loader
@@ -48,12 +48,12 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
             stared={note.stared}
             onToggle={onToggleStar}
           />
-          <Link className="w-full flex justify-between antialiased text-wrap px-4 py-3" to={'/noteview/?id=' + note.noteid}>
-            <div className="inline-flex">
+          <Link className="w-full flex justify-between antialiased text-wrap px-4 py-3 h-12" to={'/noteview/?id=' + note.noteid}>
+            <div className="inline-flex items-center">
               <p className="text-lg text-wrap line-clamp-1">{note.title}</p>
             </div>
-            <div className="xm:inline-flex items-center hidden">
-              <p className="min-w-min inline-flex">{format(new Date(note.crDate), 'MMM dd, yyyy')}</p>
+            <div className="xm:inline-flex items-center hidden min-w-32 justify-end" >
+              <p className="inline-flex ml-4">{format(new Date(note.crDate), 'MMM dd, yyyy')}</p>
             </div>
           </Link>
         </div>

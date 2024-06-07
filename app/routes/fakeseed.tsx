@@ -1,6 +1,6 @@
-import { notedb } from "~/_tools/prisma.server";
+import { notedb } from "~/comp/prisma.server";
 import { LoaderFunction } from "@remix-run/node";
-import { faker } from '@faker-js/faker';
+import { fakerEN_US as faker } from '@faker-js/faker';
 
 // Function to seed the database with fake note data
 async function seed() {
@@ -8,9 +8,9 @@ async function seed() {
     const addnote = await notedb.notes.create({
         data: {
             noteid: faker.string.nanoid(8), // Generate a random note ID
-            title: faker.lorem.words({ min: 3, max: 8 }), // Generate a random title
-            content: faker.lorem.paragraph({ min: 3, max: 6 }), // Generate random content
-            crDate: faker.date.past(), // Generate a random past date for creation date
+            title: faker.lorem.sentence({ min: 5, max: 18 }), // Generate a random title
+            content: faker.lorem.paragraphs({ min: 3, max: 16 }, '/n'), // Generate random content
+            crDate: faker.date.recent(), // Generate a random past date for creation date
             upDate: faker.date.recent(), // Generate a random recent date for update date
             stared: faker.datatype.boolean(), // Generate a random boolean for stared status
         }
