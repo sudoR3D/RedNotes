@@ -1,5 +1,5 @@
 // Import React library
-import React from "react";
+import React from "react"
 
 // Define and export the Loading component
 export default function Loading() {
@@ -10,5 +10,5 @@ export default function Loading() {
             <div className="w-6 h-6 bg-slate-300 rounded-full absolute top-0 left-0 animate-ping"></div>
             <div className="w-6 h-6 bg-slate-300 rounded-full absolute top-0 left-0 animate-pulse"></div>
         </div>
-    );
+    )
 }

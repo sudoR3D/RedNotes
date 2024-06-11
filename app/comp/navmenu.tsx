@@ -1,15 +1,15 @@
 // Import necessary dependencies
-import React from "react";
-import { useLocation, Link, useNavigation } from "@remix-run/react";
-import ArrowLeftSLine from "remixicon-react/ArrowLeftSLineIcon";
-import AddLineIcon from "remixicon-react/AddLineIcon";
-import Loading from "./loading";
+import React from "react"
+import { useLocation, Link, useNavigation } from "@remix-run/react"
+import ArrowLeftSLine from "remixicon-react/ArrowLeftSLineIcon"
+import AddLineIcon from "remixicon-react/AddLineIcon"
+import Loading from "./loading"
 
 // Define and export the NavMenu component
 export default function NavMenu() {
     // Get the current location and navigation state
-    const location = useLocation();
-    const navigation = useNavigation();
+    const location = useLocation()
+    const navigation = useNavigation()
 
     return (
         // Navigation bar container
@@ -41,5 +41,5 @@ export default function NavMenu() {
                 </div>
             </div>
         </nav>
-    );
+    )
 }

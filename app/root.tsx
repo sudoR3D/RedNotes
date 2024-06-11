@@ -1,15 +1,15 @@
 // Package Dependencies
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
-import { LinksFunction } from "@remix-run/node";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
+import { LinksFunction } from "@remix-run/node"
 
 // Component Dependencies
-import stylesheet from "~/tailwind.css?url";
-import NavMenu from "./comp/navmenu";
+import stylesheet from "~/tailwind.css?url"
+import NavMenu from "./comp/navmenu"
 
 // Add Stylesheet
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
-];
+]
 
 // Document Layout Component
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -30,7 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </body>
     </html>
-  );
+  )
 }
 
 // Main App Component
@@ -41,5 +41,5 @@ export default function App() {
         <Outlet />
       </div>
     </div>
-  );
+  )
 }

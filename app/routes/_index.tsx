@@ -1,28 +1,28 @@
 // Dependencies
-import React from "react";
-import { json, LoaderFunction, ActionFunction } from "@remix-run/node";
-import { Link, useLoaderData, MetaFunction } from "@remix-run/react";
-import type { Notes } from "@prisma/client";
-import { format } from "date-fns";
-import { notedb } from "~/comp/prisma.server";
-import ToggleStarButton from "~/comp/startoggle";
+import React from "react"
+import { json, LoaderFunction, ActionFunction } from "@remix-run/node"
+import { Link, useLoaderData, MetaFunction } from "@remix-run/react"
+import type { Notes } from "@prisma/client"
+import { format } from "date-fns"
+import { notedb } from "~/comp/prisma.server"
+import ToggleStarButton from "~/comp/togglestar"
 
 //Data type for loader
 type LoaderData = {
-  notes: Notes[];
-};
+  notes: Notes[]
+}
 
 //Props for Index
 interface Props {
-  onToggleStar: (updatedNote: { noteid: string; stared: boolean }) => void;
+  onToggleStar: (updatedNote: { noteid: string; stared: boolean }) => void
 }
 
 //Inject meta
 export const meta: MetaFunction = () => {
   return [
     { title: "Notes by sudoRED w/ Remix" },
-  ];
-};
+  ]
+}
 
 //Loader
 export const loader: LoaderFunction = async () => {
@@ -30,14 +30,14 @@ export const loader: LoaderFunction = async () => {
     orderBy: [{
       crDate: 'desc'
     }]
-  });
-  const data: LoaderData = { notes: await GetNotesList() };
-  return json(data);
-};
+  })
+  const data: LoaderData = { notes: await GetNotesList() }
+  return json(data)
+}
 
 //Index
 const Index: React.FC<Props> = ({ onToggleStar }) => {
-  const { notes } = useLoaderData<LoaderData>(); // Get data from loader
+  const { notes } = useLoaderData<LoaderData>()  // Get data from loader
 
   return (
     <>
@@ -59,30 +59,7 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
         </div>
       ))}
     </>
-  );
-};
+  )
+}
 
-export default Index;
-
-//Action
-//export const action: ActionFunction = async ({ request }) => {
-//  const formData = await request.formData();
-//  const noteId = formData.get("noteid");
-//
-//  if (typeof noteId !== "string") {
-//    return json({ error: "Invalid note ID" }, { status: 400 });
-//  }
-//
-//  const note = await notedb.notes.findUnique({ where: { noteid: noteId } });
-//
-//  if (!note) {
-//    return json({ error: "Note not found" }, { status: 404 });
-//  }
-//
-//  const updatedNote = await notedb.notes.update({
-//    where: { noteid: noteId },
-//    data: { stared: !note.stared },
-//  });
-//
-//  return json({ ok: true });
-//};
+export default Index

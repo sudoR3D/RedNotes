@@ -1,6 +1,6 @@
-import { notedb } from "~/comp/prisma.server";
-import { LoaderFunction } from "@remix-run/node";
-import { fakerEN_US as faker } from '@faker-js/faker';
+import { notedb } from "~/comp/prisma.server"
+import { LoaderFunction } from "@remix-run/node"
+import { fakerEN_US as faker } from '@faker-js/faker'
 
 // Function to seed the database with fake note data
 async function seed() {
@@ -14,14 +14,16 @@ async function seed() {
             upDate: faker.date.recent(), // Generate a random recent date for update date
             stared: faker.datatype.boolean(), // Generate a random boolean for stared status
         }
-    });
-    console.log(addnote); // Log the created note to the console
+    })
+    console.log(addnote)  // Log the created note to the console
 }
 
 // Loader function to seed the database with multiple notes
 export const loader: LoaderFunction = async () => {
-    for (let count = 0; count < 5; count++) {
-        await seed(); // Call the seed function to add a note
+    for (let count = 0;
+        count < 5;
+        count++) {
+        await seed()  // Call the seed function to add a note
     }
-    return null; // Return null to indicate the loader has finished
-};
+    return null  // Return null to indicate the loader has finished
+} 
