@@ -1,13 +1,14 @@
 // Dependencies
 import React from "react"
 import { json, LoaderFunction, ActionFunction } from "@remix-run/node"
-import { Link, useLoaderData, MetaFunction } from "@remix-run/react"
+import { Link, useLoaderData, MetaFunction, useSearchParams } from "@remix-run/react"
 import type { Notes } from "@prisma/client"
 import { format } from "date-fns"
 import { notedb } from "~/comp/prisma.server"
 import ToggleStarButton from "~/comp/togglestar"
-import ArrowLeftSLineIcon from "remixicon-react/ArrowLeftSLineIcon"
-import ArrowRightSLineIcon from 'remixicon-react/ArrowRightSLineIcon'
+import ArrowLeft from "remixicon-react/ArrowLeftSLineIcon"
+import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
+import { checkSession, getUserId } from "~/comp/auth.server"
 
 //Data type for loader
 type LoaderData = {
@@ -32,17 +33,22 @@ export const meta: MetaFunction = () => {
 
 //Loader
 export const loader: LoaderFunction = async ({ request }) => {
+  const userid = await checkSession(request, true) as string
   const url = new URL(request.url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
   const listsize = parseInt('10')
+
   const GetNotesList = () => notedb.notes.findMany({
+    where: { ownerid: userid },
     orderBy: [{
       crDate: 'desc'
     }],
     skip: (page - 1) * listsize,
     take: listsize
   })
-  const totalsize = await notedb.notes.count()
+  const totalsize = await notedb.notes.count({
+    where: { ownerid: userid }
+  })
   const pagecount = Math.ceil(totalsize / listsize)
   const listindex = (Math.ceil((page - 1) * listsize + 1)) + ' - ' + (Math.ceil(page * listsize))
   const notes = await GetNotesList()
@@ -52,7 +58,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 //Index
 const Index: React.FC<Props> = ({ onToggleStar }) => {
   const { notes, pagecount, totalsize, page, listindex } = useLoaderData<LoaderData>()  // Get data from loader
-
+  const [searchParams, setSearchParams] = useSearchParams()
+  const changePage = (newPage: number) => {
+    setSearchParams({ page: newPage.toString() });
+  };
   return (
     <>
       <ul>
@@ -84,14 +93,22 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
             <p className="text-lg text-wrap line-clamp-1">Showing notes {listindex} of {totalsize}</p>
           </div>
           <div className="gap-x-3 xm:inline-flex items-center hidden min-w-32 justify-end" >
-            {page > 1 ?
-              <Link className="my-3 p-2.5 hover:bg-accent hover:scale-105 rounded-lg align-middle transition-color duration-100 ease-in" to={'/?page=' + (page - 1)}>
-                <ArrowLeftSLineIcon className="w-7 h-7" />
-              </Link> : null}
-            {page < pagecount ?
-              <Link className="my-3 p-2.5 hover:bg-accent hover:scale-105 rounded-lg align-middle transition-color duration-100 ease-in" to={'/?page=' + (page + 1)}>
-                <ArrowRightSLineIcon className="w-7 h-7" />
-              </Link> : null}
+            <button
+              onClick={() => changePage(page - 1)}
+              type="button"
+              disabled={page <= 1}
+              className="enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 disabled:bg-gray-800 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in"
+            >
+              <ArrowLeft />
+            </button>
+            <button
+              onClick={() => changePage(page + 1)}
+              type="button"
+              disabled={page >= pagecount}
+              className="enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 disabled:bg-gray-800 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in"
+            >
+              <ArrowRight />
+            </button>
           </div>
         </div>
       </div>

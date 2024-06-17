@@ -1,5 +1,5 @@
 // Dependencies
-import { useFetcher, useLoaderData } from "@remix-run/react"
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react"
 import { redirect, ActionFunction, json } from "@remix-run/node"
 import { notedb } from "~/comp/prisma.server"
 import { Save } from "lucide-react"
@@ -12,6 +12,8 @@ import EraserLineIcon from "remixicon-react/EraserLineIcon"
 import EditBoxLine from "remixicon-react/EditBoxLineIcon"
 import Loading from "~/comp/loading"
 import { nanoid } from "nanoid"
+import { checkSession } from "~/comp/auth.server"
+import ArrowLeftSLine from "remixicon-react/ArrowLeftSLineIcon"
 
 // Props interface
 interface toggleStarProps {
@@ -30,8 +32,10 @@ interface Note {
 
 // Loader
 export async function loader({ request }) {
+  const userid = await checkSession(request, true) as string
   const url = new URL(request.url)
   const reqid = url.searchParams.get("id")
+
   let note: Note | null
 
   if (reqid !== null) {
@@ -150,6 +154,7 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
     )
   }
 
+  const goto = useNavigate();
   return (
     <>
       <div className="gap-y-4 grid">
@@ -169,6 +174,13 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
           </div>
           <div className="inline-flex gap-x-4">
             <button
+              onClick={() => goto(-1)}
+              type="button"
+              className="hover:bg-accent transition-color enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 disabled:bg-gray-800 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in"
+            >
+              <ArrowLeftSLine />
+            </button>
+            <button
               type="button"
               onClick={toggltEdit}
               className="enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in disabled:bg-gray-800 enabled:hover:bg-accent   transition-color transition-color"
@@ -182,8 +194,7 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
 
             <DoDelete
               noteId={formNote.noteid}
-              redirURL="/"
-              onDelete={() => console.log(`Note ${formNote.noteid} deleted`)}
+              onDelete={() => goto(-1)}
             />
 
             <button
@@ -201,7 +212,7 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
             </button>
           </div>
         </div>
-        <form method="POST" className="gap-y-4 grid">
+        <form className="gap-y-4 grid">
           <textarea
             placeholder="Note Title"
             name="title"
@@ -218,7 +229,7 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
             name="content"
             onChange={handleInputChange}
             disabled={!editing}
-            className="min-h-[40vh] text-lg h-auto w-full antialiased px-4 py-3.5 focus:scale-[1.01] hover:scale-[1.01] duration-75 bg-neutral-900 rounded-lg resize-x"
+            className="min-h-[40vh] text-lg h-auto w-full antialiased px-4 py-3.5 focus:scale-[1.01] hover:scale-[1.01] duration-75 bg-neutral-900 rounded-lg resize-y"
           />
           <input type="hidden" name="noteid" value={formNote.noteid} />
         </form>
@@ -232,6 +243,7 @@ export default Index
 // Action function
 export const action: ActionFunction = async ({ request }) => {
   // Get data from request
+  const userid = await checkSession(request, true) as string
   const formData = await request.formData()
   const noteid = formData.get("noteid") === "" ? (nanoid(8) as string) : (formData.get("noteid") as string)
   const title = formData.get("title") as string
@@ -251,6 +263,7 @@ export const action: ActionFunction = async ({ request }) => {
         noteid: noteid,
         title: title,
         content: content,
+        ownerid: userid
       },
     })
     // Redirect to noteview with new noteid

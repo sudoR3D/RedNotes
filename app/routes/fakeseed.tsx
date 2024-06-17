@@ -7,6 +7,7 @@ async function seed() {
     // Create a new note with random data
     const addnote = await notedb.notes.create({
         data: {
+            ownerid: 'pr3yoO2JZY',
             noteid: faker.string.nanoid(8), // Generate a random note ID
             title: faker.lorem.sentence({ min: 5, max: 18 }), // Generate a random title
             content: faker.lorem.paragraphs({ min: 3, max: 16 }, '/n'), // Generate random content

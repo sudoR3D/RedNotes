@@ -9,10 +9,8 @@ generator client {
 }
 
 datasource db {
-  //
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  //url      = "postgresql://postgres:postgres@localhost:5432/devnotes?schema=public"
 }
 
 model Notes {
@@ -22,4 +20,15 @@ model Notes {
   upDate  DateTime @updatedAt
   content String
   stared  Boolean  @default(false)
+  ownerid String
+  owner   Users    @relation(fields: [ownerid], references: [userid], onDelete: Cascade)
+}
+
+model Users {
+  userid   String  @id @unique @default(uuid())
+  nFirst   String
+  nLast    String
+  passHash String
+  email    String  @unique
+  Notes    Notes[]
 }

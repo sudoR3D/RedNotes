@@ -5,11 +5,10 @@ import Loading from './loading'
 
 type DeleteButtonProps = {
     noteId: string
-    redirURL: string
     onDelete?: () => void
 }
 
-const DoDelete: React.FC<DeleteButtonProps> = ({ noteId, redirURL, onDelete }) => {
+const DoDelete: React.FC<DeleteButtonProps> = ({ noteId, onDelete }) => {
     const [loading, setLoading] = useState(false)
 
     const fetcher = useFetcher()

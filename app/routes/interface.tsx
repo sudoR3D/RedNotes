@@ -2,7 +2,7 @@ import { ActionFunction } from "@remix-run/node"
 import { notedb } from "~/comp/prisma.server"
 import { redirect } from "@remix-run/node"
 import { json } from "@remix-run/node"
-
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react"
 
 
 export const action: ActionFunction = async ({ request }) => {
@@ -11,7 +11,7 @@ export const action: ActionFunction = async ({ request }) => {
     const reqjob = formData.get("job")
     switch (reqjob) {
         case 'deleteNote':
-            console.log('delete note' + formData.get('noteid'))
+            //console.log('delete note' + formData.get('noteid'))
             const delnote = await notedb.notes.findUnique({
                 where: {
                     noteid: formData.get('noteid') as string
@@ -27,7 +27,10 @@ export const action: ActionFunction = async ({ request }) => {
                         noteid: delnote.noteid,
                     }
                 })
-                return redirect("/")
+                //const goto = useNavigate();
+                //function goback() { () => goto(-1) }
+                return deletedNote//goback()
+                //return redirect("/")
             } catch (error) {
                 return json({ error }, { status: 500 })
             }

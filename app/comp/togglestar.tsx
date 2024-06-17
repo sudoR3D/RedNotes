@@ -64,7 +64,6 @@ const ToggleStarButton: React.FC<ToggleStarButtonProps> = ({ noteId, stared: ini
                 <>
                     <StarSmileFillIcon className="group-hover:block hidden hover:duration-100" />
                     <StarSmileLineIcon className="group-hover:hidden block hover:duration-100" />
-
                 </>
             )}
         </button>
