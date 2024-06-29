@@ -16,10 +16,7 @@ interface User {
     nLast: string
     email: string
 }
-interface Pass {
-    curr: string
-    new: string
-}
+
 export const meta: MetaFunction = () => {
     return [
         { title: "User Profile - RedNotes" },
