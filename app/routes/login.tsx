@@ -3,7 +3,7 @@ import LoginFill from 'remixicon-react/LoginCircleFillIcon'
 import { useNavigate, useFetcher, useLoaderData } from '@remix-run/react'
 import EyeOn from 'remixicon-react/EyeFillIcon'
 import EyeOff from 'remixicon-react/EyeCloseFillIcon'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { signup, login, checkSession } from '~/comp/auth.server'
@@ -49,7 +49,8 @@ const logscreen = () => {
     //Submit
     const returnto = useLoaderData<typeof loader>()
     const fetcher = useFetcher()
-    const handleSubmit = () => {
+    const submit = async () => {
+        //preventDefault();
         fetcher.submit(
             {
                 action: signup ? 'signup' : 'login',
@@ -62,12 +63,17 @@ const logscreen = () => {
             { method: "post" }
         )
     }
+    useEffect(() => {
+        document.title = signup ? "Signup - RedNotes" : "Login - RedNotes"
+    }, [signup])
     return (
         <>
             <div className="flex items-center justify-center">
                 <div className='gap-y-4 gap-x-2 grid w-4/6 mt-[8vh]'>
                     <div className='gap-y-1 grid justify-center'>
-                        <h1 className="text-4xl text-center font-Kayak tracking-wide pt-1 content-center pl-3">{signup ? 'Create new account' : 'Login to access Notes'}</h1>
+                        <h1 className="text-4xl text-center font-Kayak tracking-wide pt-1 content-center">
+                            {signup ? 'Create new account' : 'Login to access Notes'}
+                        </h1>
                         <div className='flex align-middle justify-center'>
                             <p className='flex-inline mr-2'>OR </p>
                             <button onClick={() => togSignup()} type="button" className="flex-inline transition-color hover:text-accent transition-color hover:duration-100 rounded-lg font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in" >
@@ -94,7 +100,7 @@ const logscreen = () => {
                                 <p className='underline '>Reset password</p>
                             </button>
                             <div className='flex gap-x-4'>
-                                <button onClick={handleSubmit} type="button" className=" h-14 flex text-xl group my-3 hover:bg-accent transition-color enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 disabled:bg-gray-800 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in" >
+                                <button onClick={() => submit()} type='button' className=" h-14 flex text-xl group my-3 hover:bg-accent transition-color enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 disabled:bg-gray-800 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in" >
                                     <LoginFill className="group-hover:block hidden hover:duration-100" />
                                     <LoginLine className="group-hover:hidden block hover:duration-100" />
                                     <p className='pl-2'>{signup ? 'Signup' : 'LogIn'}</p>
@@ -118,10 +124,6 @@ export const action: ActionFunction = async ({ request }) => {
     let fname = form.get('fname')
     let lname = form.get('lname')
     const returnto = form.get('to') as string
-    console.log(returnto)
-
-    //console.log(email + '  ' + pass + '  ' + fname + '  ' + lname + '  ' + action)
-
     if (typeof action !== 'string' || typeof email !== 'string' || typeof pass !== 'string') {
         return json({ error: 'Invalid Email or Password', form: action }, { status: 400 })
     }
@@ -134,7 +136,6 @@ export const action: ActionFunction = async ({ request }) => {
     //Auth switch
     switch (action) {
         case 'login': {
-            //console.log(to)
             return await login({ email, pass, returnto })
         }
         case 'signup': {

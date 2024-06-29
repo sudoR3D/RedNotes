@@ -1,14 +1,14 @@
 // Dependencies
 import React from "react"
 import { json, LoaderFunction, ActionFunction } from "@remix-run/node"
-import { Link, useLoaderData, MetaFunction, useSearchParams } from "@remix-run/react"
+import { Link, useLoaderData, MetaFunction, useSearchParams, useNavigate } from "@remix-run/react"
 import type { Notes } from "@prisma/client"
 import { format } from "date-fns"
 import { notedb } from "~/comp/prisma.server"
 import ToggleStarButton from "~/comp/togglestar"
 import ArrowLeft from "remixicon-react/ArrowLeftSLineIcon"
 import ArrowRight from 'remixicon-react/ArrowRightSLineIcon'
-import { checkSession, getUserId } from "~/comp/auth.server"
+import { checkSession } from "~/comp/auth.server"
 
 //Data type for loader
 type LoaderData = {
@@ -35,7 +35,7 @@ export const meta: MetaFunction = () => {
 export const loader: LoaderFunction = async ({ request }) => {
   const userid = await checkSession(request, true) as string
   const url = new URL(request.url)
-  const page = parseInt(url.searchParams.get('page') || '1', 10)
+  const page = parseInt(url.searchParams.get('page') || '1', 10) || 1
   const listsize = parseInt('10')
 
   const GetNotesList = () => notedb.notes.findMany({
@@ -62,6 +62,9 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
   const changePage = (newPage: number) => {
     setSearchParams({ page: newPage.toString() });
   };
+  const openNote = (noteid: string) => {
+    const open = useNavigate()
+  }
   return (
     <>
       <ul>
@@ -72,7 +75,11 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
               stared={note.stared}
               onToggle={onToggleStar}
             />
-            <Link className="w-full flex justify-between antialiased text-wrap px-4 py-3 h-12" to={'/noteview/?id=' + note.noteid}>
+            <Link className="w-full flex justify-between antialiased text-wrap px-4 py-3 h-12"
+              to={{
+                pathname: 'noteview',
+                search: '?id=' + note.noteid + '&&p=' + page,
+              }} >
               <div className="inline-flex items-center">
                 <p className="text-lg text-wrap line-clamp-1">{note.title}</p>
               </div>
@@ -84,15 +91,14 @@ const Index: React.FC<Props> = ({ onToggleStar }) => {
         ))}
       </ul>
       <div className="w-full md:w-[704px] xl:w-[820px] lg:w-[820px] flex my-3 hover:scale-[1.01] duration-75 bg-neutral-900 rounded-lg">
-
-        <div className="w-full flex justify-between antialiased text-wrap px-4 py-6 my-4 h-12">
-          <div className="inline-flex items-center">
-            <p className="text-lg text-wrap line-clamp-1">Page {page} of {pagecount}</p>
+        <div className="w-full flex justify-between  antialiased text-wrap px-4 py-6 my-4 h-12 xm:h-12">
+          <div className="xs:inline-flex hidden items-center">
+            <p className="text-lg text-wrap ">Page {page} of {pagecount}</p>
           </div>
           <div className="inline-flex items-center">
             <p className="text-lg text-wrap line-clamp-1">Showing notes {listindex} of {totalsize}</p>
           </div>
-          <div className="gap-x-3 xm:inline-flex items-center hidden min-w-32 justify-end" >
+          <div className="gap-x-3 inline-flex items-center min-w-32 justify-end" >
             <button
               onClick={() => changePage(page - 1)}
               type="button"

@@ -3,15 +3,20 @@ import { notedb } from "~/comp/prisma.server"
 import { redirect } from "@remix-run/node"
 import { json } from "@remix-run/node"
 import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react"
+import { canEdit, checkSession, logout } from "~/comp/auth.server"
 
 
 export const action: ActionFunction = async ({ request }) => {
-    // Get data from request
+    const userid = await checkSession(request, true) as string
     const formData = await request.formData()
+    const reqNoteID = formData.get("noteid") as string
+    const isOwner = typeof reqNoteID !== null && await canEdit(reqNoteID, request)
+    if (!isOwner) {
+        throw new Error('Permission error')
+    }
     const reqjob = formData.get("job")
     switch (reqjob) {
         case 'deleteNote':
-            //console.log('delete note' + formData.get('noteid'))
             const delnote = await notedb.notes.findUnique({
                 where: {
                     noteid: formData.get('noteid') as string
@@ -27,14 +32,10 @@ export const action: ActionFunction = async ({ request }) => {
                         noteid: delnote.noteid,
                     }
                 })
-                //const goto = useNavigate();
-                //function goback() { () => goto(-1) }
-                return deletedNote//goback()
-                //return redirect("/")
+                return deletedNote
             } catch (error) {
                 return json({ error }, { status: 500 })
             }
-            return redirect("/")
         case 'makeFav':
             console.log('fav note' + formData.get('noteid'))
             const note = await notedb.notes.findUnique({

@@ -36,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 // Main App Component
 export default function App() {
   return (
-    <div className="py-[5.4rem] justify-center text-zinc-300 flex px-8">
+    <div className="py-[5.4rem] justify-center text-zinc-300 flex mdpx-8 px-4">
       <div className="grid w-full md:w-[704px] xl:w-[820px] lg:w-[820px]">
         <Outlet />
       </div>

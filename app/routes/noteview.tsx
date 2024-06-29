@@ -20,6 +20,11 @@ interface toggleStarProps {
   onToggleStar: (updatedNote: { noteid: string; stared: boolean }) => void
 }
 
+type LoaderData = {
+  note: Note
+  backindex: number
+}
+
 // Note interface
 interface Note {
   noteid: string
@@ -34,7 +39,8 @@ interface Note {
 export async function loader({ request }) {
   const userid = await checkSession(request, true) as string
   const url = new URL(request.url)
-  const reqid = url.searchParams.get("id")
+  const reqid = url.searchParams.get("id") as string
+  const backindex = url.searchParams.get('p') as string || 1
 
   let note: Note | null
 
@@ -53,12 +59,12 @@ export async function loader({ request }) {
     }
   }
 
-  return note
+  return json({ note, backindex })
 }
 
 // Main component
 const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
-  const note = useLoaderData<Note | undefined>()
+  const { note, backindex } = useLoaderData<LoaderData>()
 
   // State management
   const [formNote, setFormNote] = useState(note)
@@ -157,9 +163,9 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
   const goto = useNavigate();
   return (
     <>
-      <div className="gap-y-4 grid">
+      <div className="gap-y-2 md:gap-y-4 grid">
         <div className="mt-4 flex items-center justify-between">
-          <div className="inline-flex items-center gap-x-4">
+          <div className="inline-flex items-center gap-x-2 md:gap-x-4">
             <ToggleStarButton
               noteId={formNote.noteid}
               stared={formNote.stared}
@@ -172,9 +178,9 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
                 : null}
             </p>
           </div>
-          <div className="inline-flex gap-x-4">
+          <div className="inline-flex gap-x-2 md:gap-x-4">
             <button
-              onClick={() => goto(-1)}
+              onClick={() => goto('/?page=' + backindex)}
               type="button"
               className="hover:bg-accent transition-color enabled:hover:bg-accent enabled:bg-gray-900 disabled:hover:bg-gray-600 disabled:bg-gray-800 transition-color hover:duration-100 rounded-lg p-3.5 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 align-middle transition-color duration-100 ease-in"
             >
@@ -212,7 +218,7 @@ const Index: React.FC<toggleStarProps> = ({ onToggleStar }) => {
             </button>
           </div>
         </div>
-        <form className="gap-y-4 grid">
+        <form className="gap-y-2 md:gap-y-4 grid">
           <textarea
             placeholder="Note Title"
             name="title"
